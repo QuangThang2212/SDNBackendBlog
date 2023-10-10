@@ -16,8 +16,8 @@ const blog = mongoose.model(
       type: String,
       required: true,
       validate: {
-        validator: (value) => value.length > 10 && value.length <= 3000,
-        message: "Content must greater than 10 characters and less than 3000 characters",
+        validator: (value) => value.length > 10,
+        message: "Content must greater than 10 characters",
       },
     },
     PublicStatus: { type: Boolean, required: true },
