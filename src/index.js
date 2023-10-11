@@ -2,12 +2,14 @@ import express from "express";
 import * as dotenv from "dotenv";
 import routers from "./routers/index.js";
 import mongoose from "mongoose";
+import checkToken from "./auth/authentication.js";
 
 //create web server
 const app = express();
 
 //define data type receive from front-end as json
 app.use(express.json());
+app.use(checkToken);
 
 //load .env file: config file
 dotenv.config();
