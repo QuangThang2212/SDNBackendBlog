@@ -26,6 +26,7 @@ const checkToken = (req, res, next) => {
       });
       res.end();
     } else {
+      req.user = jwt.decode(token, process.env.SECRET_KEY_JWT);
       next();
       return;
     }

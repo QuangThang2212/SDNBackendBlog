@@ -4,7 +4,6 @@ const topic = mongoose.model(
   "Topic",
   new Schema(
     {
-      id: { type: ObjectID },
       TopicName: {
         type: String,
         required: true,

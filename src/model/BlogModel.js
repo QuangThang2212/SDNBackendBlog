@@ -4,7 +4,6 @@ const blog = mongoose.model(
   "Blog",
   new Schema(
     {
-      id: { type: OBjectID },
       Title: {
         type: String,
         required: true,
@@ -25,6 +24,7 @@ const blog = mongoose.model(
       NumberOfFav: { type: Number, required: true },
       CreateAt: { type: Date, required: true },
       TopicID: { type: String, required: true },
+      UserOwnerID: { type: String, required: true }
     },
     {
       timestamps: true,

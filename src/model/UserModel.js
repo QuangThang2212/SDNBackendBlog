@@ -4,7 +4,6 @@ const user = mongoose.model(
   "user",
   new Schema(
     {
-      id: { type: ObjectID },
       usename: {
         type: String,
         required: true,
