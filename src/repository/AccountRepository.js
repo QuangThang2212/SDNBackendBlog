@@ -1,5 +1,9 @@
 import DefaultImage from "../../resource/DefaultImage.js";
 import user from "../model/UserModel.js";
+import bcrypt from "bcrypt"
+import jwt from 'jsonwebtoken'
+
+
 
 class accountRepository {
   async login({ email, password }) {
@@ -12,9 +16,9 @@ class accountRepository {
           {
             data: userExisting,
           },
-          process.env.SECRET_KEY_JWT,
+          process.env.SECRET_KEY,
           {
-            expiresIn: process.env.TOKEN_EXPIRES_TIME,
+            expiresIn: "5m",
           }
         );
 
@@ -31,9 +35,8 @@ class accountRepository {
     }
   }
 
-  async register({ name, email, password }) {
-    debugger;
-    const userExisting = await User.findOne({ email }).exec();
+  async register({ usename, email, password }) {
+    const userExisting = await user.findOne({ email }).exec();
     if (userExisting != null) {
       throw new Error("User existing.");
     }
@@ -44,8 +47,8 @@ class accountRepository {
     const role = process.env.ROLE_USER;
 
     const newUser = await user.create({
-      name,
-      gmail,
+      usename,
+      email,
       password: hashPassword,
       avatar: avatar,
       ListFavBlog: [],
@@ -61,6 +64,19 @@ class accountRepository {
       password: "Not show",
     };
   }
+
+  async generateVerificationCode() {
+    const digits = '0123456789';
+    let verificationCode = '';
+  
+    for (let i = 0; i < 6; i++) {
+      verificationCode += digits[Math.floor(Math.random() * digits.length)];
+    }
+  
+    return verificationCode;
+  }
+
+
 }
 
 export default new accountRepository();

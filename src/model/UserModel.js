@@ -1,4 +1,6 @@
 import mongoose, { Schema } from "mongoose";
+import isEmail from "validator/lib/isEmail.js";
+
 
 const user = mongoose.model(
   "user",
@@ -12,7 +14,7 @@ const user = mongoose.model(
           message: "Use-name must greater than 1 characters and less than 20 characters",
         },
       },
-      gmail: {
+      email: {
         type: String,
         required: true,
         validate: {
