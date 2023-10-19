@@ -36,8 +36,8 @@ AccountRouter.post(
     .withMessage("Mật khẩu phải lớn hơn 8 kí tự"),
   AccountController.login
 );
-AccountRouter.post(
-  "/vertify",
-  AccountController.vertify
-);
+// AccountRouter.post(
+//   "/vertify",
+//  // AccountController.vertify
+// );
 export default AccountRouter;

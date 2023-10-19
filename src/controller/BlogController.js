@@ -1,24 +1,29 @@
+import { validationResult } from "express-validator";
 import blog from "../model/BlogModel.js";
 import BlogRepository from "../repository/BlogRepository.js";
 
 class blogController {
   async createBlog(req, res ) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    const { title, Content, topicID } = req.body;
-    const userid = req.user.id;
-    const blogId = req.params.id;
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //   return res.status(400).json({ errors: errors.array() });
+    // }
+    const { title, content, topicID } = req.body;
+    const userid = req.user.data._id;
+    const blogId = req.body.blogId;
 
     try {
+      var messages;
+      var blog;
       if (blogId) {
-        const blog = await BlogRepository.update({ title, Content, topicID, blogId });
+        blog = await BlogRepository.updateBlog({ title, content, topicID, blogId });
+        messages = "Blog has been updated successfully, please create publish request"
       } else {
-        const blog = await BlogRepository.createBlog({ title, Content, topicID, userid });
+        blog = await BlogRepository.createBlog({ title, content, topicID, userid });
+        messages = "New blog has been created successfully, please create publish request"
       }
       res.status(200).json({
-        message: "New blog has been updated successfully, please create publish request",
+        message: messages,
         data: blog,
       });
     } catch (error) { 

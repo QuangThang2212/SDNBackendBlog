@@ -1,48 +1,41 @@
 import blog from "../model/BlogModel.js";
 
 class BlogRepository {
-  async createBlog({ blogTitle, blogContent, blogTopicID, userOwnerID }) {
-    const blogTitleExists = await blog.find({ Title: blogTitle }).count().exec();
+
+  async createBlog({ title, content, topicID, userid }) {
+    const blogTitleExists = await blog.find({ title }).count().exec();
     if (blogTitleExists > 0) {
       throw new Error("Blog title already exists, please give it a new title");
     }
-
+    console.log({ title, content, topicID, userid });
     const newBlog = await blog.create({
-      Title: blogTitle,
-      Content: blogContent,
+      Title: title,
+      Content:content,
       PublicStatus: false,
-      NumberOfFav: 0,
-      CreateAt: new Date.now(),
-      TopicID: blogTopicID,
-      UserOwnerID: userOwnerID,
-      NumberOfLike: []
+      TopicID: topicID,
+      UserOwnerID: userid,
     });
 
-    // Clone a new user
     return {
       ...newBlog._doc,
     };
+
   }
-  async updateBlog({ blogTitle, blogContent, blogTopicID, blogID }) {
-    const blogDetail = await blog.findById(blogId).exec();
-    if (blogDetail) {
+  async updateBlog({ title, content, topicID, blogId }) {
+    const blogDetail = await blog.findById(blogId);
+    if (blogDetail===null) {
       throw new Error("Blog isn't exist");
     }
-    const blogTitleExists = await blog.find({ Title: blogTitle }).count().exec();
-    if (blogTitleExists > 0) {
-      throw new Error("Blog title already exists, please give it a new title");
-    }
-
-    const updateBlog = await blog.update(
+    const updateBlog = await blog.updateOne(
       {
-        id: blogID,
+        _id: blogId,
       },
       {
         $set: {
-          Title: blogTitle,
-          Content: blogContent,
+          Title: title,
+          Content: content,
           PublicStatus: false,
-          TopicID: blogTopicID,
+          TopicID: topicID,
         },
       }
     );

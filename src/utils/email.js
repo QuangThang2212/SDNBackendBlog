@@ -1,12 +1,6 @@
 import nodemailer from 'nodemailer';
-import emailValidator from 'email-validator';
 
 const sendEmail = (to) => {
-    if (!emailValidator.validate(to)) {
-        console.log('Email không hợp lệ.');
-        return;
-    }
-
     let from = `G6 <${process.env.MAIL_ADDRESS}>`;
     console.log(from);
 
