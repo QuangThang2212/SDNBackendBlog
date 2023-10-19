@@ -31,41 +31,16 @@ class accountController {
     // Destructuring object
     const { usename, email, password } = req.body;
     try {
-      const verificationCode = await AccountRepository.generateVerificationCode();
-      const expiredTime = new Date().getTime() + 10 * 60 * 1000;
-      await sendEmail(email, verificationCode);
 
-      res.status(201).json({
-        message: "Register successfully.",
-        data: {
-          user: { usename, email, password },
-          verificationCode: verificationCode,
-          expiredTime,
-        },
-      });
-    } catch (error) {
-      res.status(500).json({
-        errors: error.toString(),
-      });
-    }
-  }
-
-  async vertify(req, res) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    // Destructuring object
-    const { usename, email, password } = req.body;
-    try {
+      await sendEmail(email);
       const newUser = await AccountRepository.register({ usename, email, password });
 
-      await sendEmail(email, verificationCode);
 
       res.status(201).json({
         message: "Register successfully.",
         data: {
           user: newUser,
+
         },
       });
     } catch (error) {
