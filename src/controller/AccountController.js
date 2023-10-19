@@ -31,18 +31,14 @@ class accountController {
     // Destructuring object
     const { usename, email, password } = req.body;
     try {
-      const verificationCode = await AccountRepository.generateVerificationCode();
-      const expiredTime = new Date().getTime() + 10 * 60 * 1000;
-      const newUser = await AccountRepository.register({ usename, email, password });
 
-      await sendEmail(email, verificationCode);
+      await sendEmail(email);
+      const newUser = await AccountRepository.register({ usename, email, password });
 
       res.status(201).json({
         message: "Register successfully.",
         data: {
           user: newUser,
-          verificationCode: verificationCode, 
-          expiredTime,
         },
       });
     } catch (error) {
@@ -51,8 +47,6 @@ class accountController {
       });
     }
   }
-
-  
 
 }
 

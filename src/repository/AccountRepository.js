@@ -65,16 +65,7 @@ class accountRepository {
     };
   }
 
-  async generateVerificationCode() {
-    const digits = '0123456789';
-    let verificationCode = '';
-  
-    for (let i = 0; i < 6; i++) {
-      verificationCode += digits[Math.floor(Math.random() * digits.length)];
-    }
-  
-    return verificationCode;
-  }
+
 
 
 }
