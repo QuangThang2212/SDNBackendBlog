@@ -7,7 +7,7 @@ const BlogRouter = express.Router();
 BlogRouter.get("/:id", BlogController.getBlogDetail);
 
 BlogRouter.post(
-  "/create/:id",
+  "/create",
   body("title")
     .isLength({ min: 1, max: 20 })
     .withMessage("Title for blog must be at least 1 characters and less than 20 characters"),
