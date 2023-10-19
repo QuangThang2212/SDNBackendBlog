@@ -1,4 +1,7 @@
 import AccountRepository from "../repository/AccountRepository.js";
+import { body, validationResult } from "express-validator";
+import sendEmail from '../utils/email.js';
+import jwt from 'jsonwebtoken'
 
 class accountController {
   async login(req, res) {
@@ -28,11 +31,19 @@ class accountController {
     // Destructuring object
     const { usename, email, password } = req.body;
     try {
-      // debugger
+      const verificationCode = await AccountRepository.generateVerificationCode();
+      const expiredTime = new Date().getTime() + 10 * 60 * 1000;
       const newUser = await AccountRepository.register({ usename, email, password });
+
+      await sendEmail(email, verificationCode);
+
       res.status(201).json({
         message: "Register successfully.",
-        data: newUser,
+        data: {
+          user: newUser,
+          verificationCode: verificationCode, 
+          expiredTime,
+        },
       });
     } catch (error) {
       res.status(500).json({
@@ -40,6 +51,9 @@ class accountController {
       });
     }
   }
+
+  
+
 }
 
 export default new accountController;

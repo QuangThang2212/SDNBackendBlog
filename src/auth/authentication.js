@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const listByPassURL = ["/account/login", "/account/register"];
+const listByPassURL = ["/accounts/login", "/accounts/register", "/accounts/verify"];
 
 function checkExistURL(url) {
   const result = listByPassURL.find((u) => u.toLocaleLowerCase().trim() == url.toLowerCase().trim());
@@ -16,7 +16,7 @@ const checkToken = (req, res, next) => {
 
   try {
     const token = req.headers?.authorization?.split(" ")[1];
-    const jwtObject = jwt.verify(token, process.env.SECRET_KEY_JWT);
+    const jwtObject = jwt.verify(token, process.env.SECRET_KEY);
 
     let isExpired = Date.now() >= jwtObject.exp * 1000;
 
@@ -26,7 +26,7 @@ const checkToken = (req, res, next) => {
       });
       res.end();
     } else {
-      req.user = jwt.decode(token, process.env.SECRET_KEY_JWT);
+      req.user = jwt.decode(token, process.env.SECRET_KEY);
       next();
       return;
     }
