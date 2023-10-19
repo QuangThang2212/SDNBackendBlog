@@ -2,7 +2,7 @@ import blog from "../model/BlogModel.js";
 import BlogRepository from "../repository/BlogRepository.js";
 
 class blogController {
-  async createBlog(req, res) {
+  async createBlog(req, res ) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
