@@ -35,10 +35,12 @@ class accountController {
       await sendEmail(email);
       const newUser = await AccountRepository.register({ usename, email, password });
 
+
       res.status(201).json({
         message: "Register successfully.",
         data: {
           user: newUser,
+
         },
       });
     } catch (error) {
@@ -47,7 +49,6 @@ class accountController {
       });
     }
   }
-
 }
 
 export default new accountController;

@@ -7,6 +7,7 @@ const comment = mongoose.model(
       CreateAt: { type: Object, required: true },
       comment: { type: String, required: true },
       ListAnswerComment: { type: Array, required: true },
+      blogID: { type: String, required: true },
     },
     {
       timestamps: true,
