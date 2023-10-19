@@ -28,7 +28,7 @@ const user = mongoose.model(
       avatar: {
         type: String,
       },
-      ListFavBlog: {
+      Bookmarks: {
         type: Array,
       },
       ListOwnBlog: {
