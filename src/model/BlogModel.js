@@ -24,7 +24,8 @@ const blog = mongoose.model(
       NumberOfFav: { type: Number, required: true },
       CreateAt: { type: Date, required: true },
       TopicID: { type: String, required: true },
-      UserOwnerID: { type: String, required: true }
+      UserOwnerID: { type: String, required: true },
+      NumberOfLike: { type: []}
     },
     {
       timestamps: true,

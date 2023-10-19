@@ -15,6 +15,7 @@ class BlogRepository {
       CreateAt: new Date.now(),
       TopicID: blogTopicID,
       UserOwnerID: userOwnerID,
+      NumberOfLike: []
     });
 
     // Clone a new user
