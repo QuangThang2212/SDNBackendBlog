@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const listByPassURL = ["/accounts/login", "/accounts/register", "/accounts/verify"];
+const listByPassURL = ["/accounts/login", "/accounts/register"];
 
 function checkExistURL(url) {
   const result = listByPassURL.find((u) => u.toLocaleLowerCase().trim() == url.toLowerCase().trim());

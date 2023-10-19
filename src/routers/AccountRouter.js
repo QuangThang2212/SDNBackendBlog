@@ -20,6 +20,4 @@ AccountRouter.post(
   AccountController.login
 );
 
-
-
 export default AccountRouter;
