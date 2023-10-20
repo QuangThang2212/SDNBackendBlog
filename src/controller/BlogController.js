@@ -8,18 +8,18 @@ class blogController {
     // if (!errors.isEmpty()) {
     //   return res.status(400).json({ errors: errors.array() });
     // }
-    const { title, content, topicID } = req.body;
-    const userid = req.user.data._id;
-    const blogId = req.body.blogId;
+    const { Title, Content, TopicID } = req.body;
+    const Userid = req.user.data._id;
+    const BlogId = req.body.blogId;
 
     try {
       var messages;
       var blog;
-      if (blogId) {
-        blog = await BlogRepository.updateBlog({ title, content, topicID, blogId });
+      if (BlogId) {
+        blog = await BlogRepository.updateBlog({ Title, Content, TopicID, BlogId });
         messages = "Blog has been updated successfully, please create publish request"
       } else {
-        blog = await BlogRepository.createBlog({ title, content, topicID, userid });
+        blog = await BlogRepository.createBlog({ Title, Content, TopicID, Userid });
         messages = "New blog has been created successfully, please create publish request"
       }
       res.status(200).json({
