@@ -10,12 +10,12 @@ import cookie  from 'cookie-parser'
 const app = express();
 
 //define data type receive from front-end as json
+app.use(cors({
+  origin: 'http://localhost:3000',
+}));
 app.use(express.json());
 app.use(checkToken);
 app.use(cookie());
-
-app.use(cors(
-));
 
 //load .env file: config file
 dotenv.config();
