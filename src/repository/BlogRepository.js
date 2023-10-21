@@ -3,11 +3,10 @@ import blog from "../model/BlogModel.js";
 class BlogRepository {
 
   async createBlog({ title, content, topicID, userid }) {
-    const blogTitleExists = await blog.find({ title }).count().exec();
+    const blogTitleExists = await blog.find({ Title: title }).count().exec();
     if (blogTitleExists > 0) {
       throw new Error("Blog title already exists, please give it a new title");
     }
-    console.log({ title, content, topicID, userid });
     const newBlog = await blog.create({
       Title: title,
       Content:content,

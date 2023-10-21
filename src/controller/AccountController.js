@@ -32,7 +32,14 @@ class accountController {
     const { usename, email, password } = req.body;
     try {
 
-      await sendEmail(email);
+      const sendEmailCheck = await sendEmail(email);
+      if(!sendEmailCheck){
+        console.error("Couldn't send email");
+        res.status(500).json({
+          errors: "Couldn't send email",
+        });
+        return;
+      }
       const newUser = await AccountRepository.register({ usename, email, password });
 
 

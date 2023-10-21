@@ -23,8 +23,10 @@ const sendEmail = (to) => {
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.log('Error occurred:', error.message);
+            return false;
         } else {
             console.log('Email sent successfully!');
+            return true;
         }
     });
 }
