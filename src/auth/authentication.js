@@ -39,6 +39,7 @@ const checkToken = (req, res, next) => {
       res.end();
     } else {
       req.user = jwt.decode(token, process.env.SECRET_KEY);
+
       //const roleCheck = checkURLWithRole(req.url, req.user.data.role)
       //if(roleCheck){
         next();
