@@ -3,7 +3,7 @@ import TopicRepository from "../repository/TopicRepository.js";
 
 class topicController {
   async createTopic(req, res) {
-    const { TopicName, TopicID } = req.data;
+    const { TopicName, TopicID } = req.body;
     try {
       var messages;
       var topic;

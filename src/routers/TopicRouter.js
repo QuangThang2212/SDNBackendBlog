@@ -9,4 +9,4 @@ TopicRouter.get("/:TopicID", TopicController.getTopicById);
 TopicRouter.post("/create", TopicController.createTopic);
 
 
-export default BlogRouter;
+export default TopicRouter;
