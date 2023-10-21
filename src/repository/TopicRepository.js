@@ -1,12 +1,10 @@
 import topic from "../model/TopicModel.js";
-import topic from "../model/TopicModel.js";
-import topic from "../model/TopicModel.js";
-import topic from "../model/TopicModel.js";
+
 
 class TopicRepository {
   async createNewTopic({ TopicName }) {
     const TopicNameExists = await topic.find({ TopicName }).count().exec();
-    if (blogTitleExists > 0) {
+    if (TopicNameExists > 0) {
       throw new Error("Topic name already exists, please give it a new name");
     }
     const newTopic = await topic.create({
@@ -14,7 +12,7 @@ class TopicRepository {
     });
 
     return {
-      ...newBlog._doc,
+      ...newTopic._doc,
     };
   }
   async updateTopic({ TopicName, TopicID }) {
@@ -37,7 +35,7 @@ class TopicRepository {
     );
 
     return {
-      ...newBlog._doc,
+      ...newTopic._doc,
     };
   }
   async getAllTopic() {

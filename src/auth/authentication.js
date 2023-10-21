@@ -5,7 +5,7 @@ const adminURL = ["/topic/create"]
 const userURL = []
 
 function checkExistURL(url) {
-  result = listByPassURL.find((u) => u.toLocaleLowerCase().trim() == url.toLowerCase().trim());
+  const result = listByPassURL.find((u) => u.toLocaleLowerCase().trim() == url.toLowerCase().trim());
   return result;
 }
 function checkURLWithRole(url, role) {
@@ -39,14 +39,14 @@ const checkToken = (req, res, next) => {
       res.end();
     } else {
       req.user = jwt.decode(token, process.env.SECRET_KEY);
-      const roleCheck = checkURLWithRole(req.url, req.user.data.role)
-      if(roleCheck){
+      //const roleCheck = checkURLWithRole(req.url, req.user.data.role)
+      //if(roleCheck){
         next();
-      }else{
-        res.status(500).json({
-          message: "Don't have authority to access",
-        });
-      }
+      //}else{
+      //  res.status(500).json({
+      //     message: "Don't have authority to access",
+      //   });
+      // }
     }
   } catch (error) {
     res.status(500).json({

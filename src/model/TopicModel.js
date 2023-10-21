@@ -8,8 +8,8 @@ const topic = mongoose.model(
         type: String,
         required: true,
         validate: {
-          validator: (value) => value.length > 10,
-          message: "Topic name must greater than 10 characters",
+          validator: (value) => value.length > 2,
+          message: "Topic name must greater than 2 characters",
         },
       },
     },
