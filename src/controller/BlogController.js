@@ -27,6 +27,7 @@ class blogController {
         data: blog,
       });
     } catch (error) { 
+      console.log(error.toString());
       res.status(500).json({ message: error.toString() });
     }
   }
