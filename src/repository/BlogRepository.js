@@ -2,17 +2,13 @@ import blog from "../model/BlogModel.js";
 
 class BlogRepository {
 
-  async createBlog({ title, content, topicID, userid }) {
-    const blogTitleExists = await blog.find({ Title: title }).count().exec();
-    if (blogTitleExists > 0) {
-      throw new Error("Blog title already exists, please give it a new title");
-    }
+  async createBlog({ Title, Content, TopicID, Userid }) {
     const newBlog = await blog.create({
-      Title: title,
-      Content:content,
+      Title: Title,
+      Content: Content,
       PublicStatus: false,
-      TopicID: topicID,
-      UserOwnerID: userid,
+      TopicID: TopicID,
+      UserOwnerID: Userid,
     });
 
     return {
@@ -20,21 +16,21 @@ class BlogRepository {
     };
 
   }
-  async updateBlog({ title, content, topicID, blogId }) {
-    const blogDetail = await blog.findById(blogId);
+  async updateBlog({ Title, Content, TopicID, BlogId }) {
+    const blogDetail = await blog.findById(BlogId);
     if (blogDetail===null) {
       throw new Error("Blog isn't exist");
     }
     const updateBlog = await blog.updateOne(
       {
-        _id: blogId,
+        _id: BlogId,
       },
       {
         $set: {
-          Title: title,
-          Content: content,
+          Title: Title,
+          Content: Content,
           PublicStatus: false,
-          TopicID: topicID,
+          TopicID: TopicID,
         },
       }
     );
