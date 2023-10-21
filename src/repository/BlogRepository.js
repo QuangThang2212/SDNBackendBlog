@@ -1,7 +1,6 @@
 import blog from "../model/BlogModel.js";
 
 class BlogRepository {
-
   async createBlog({ Title, Content, TopicID, Userid }) {
     const newBlog = await blog.create({
       Title: Title,
@@ -14,11 +13,10 @@ class BlogRepository {
     return {
       ...newBlog._doc,
     };
-
   }
   async updateBlog({ Title, Content, TopicID, BlogId }) {
     const blogDetail = await blog.findById(BlogId);
-    if (blogDetail===null) {
+    if (blogDetail === null) {
       throw new Error("Blog isn't exist");
     }
     const updateBlog = await blog.updateOne(
