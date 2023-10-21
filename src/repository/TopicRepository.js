@@ -40,9 +40,7 @@ class TopicRepository {
   }
   async getAllTopic() {
     const topics = await topic.find();
-    return {
-      ...topics._doc,
-    };
+    return topics;
   }
   async getTopicById(TopicID) {
     const topics = await topic.findById(TopicID);

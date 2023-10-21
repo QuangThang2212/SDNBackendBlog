@@ -24,9 +24,9 @@ class topicController {
   }
   async getAllTopic(req, res) {
     try {
-      topic = await TopicRepository.getAllTopic();
+      const result = await TopicRepository.getAllTopic();
       res.status(200).json({
-        data: topic,
+        data: result,
       });
     } catch (error) {
       res.status(500).json({ message: error.toString() });
@@ -35,9 +35,9 @@ class topicController {
   async getTopicById(req, res) {
     const TopicID = req.params.TopicID;
     try {
-      topic = await TopicRepository.getTopicById(TopicID);
+      const result = await TopicRepository.getTopicById(TopicID);
       res.status(200).json({
-        data: topic,
+        data: result,
       });
     } catch (error) {
       res.status(500).json({ message: error.toString() });

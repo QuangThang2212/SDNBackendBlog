@@ -8,8 +8,8 @@ const blog = mongoose.model(
         type: String,
         required: true,
         validate: {
-          validator: (value) => value.length > 10,
-          message: "Title must greater than 10 characters",
+          validator: (value) => value.length > 3,
+          message: "Title must greater than 3 characters",
         },
       },
       Content: {
