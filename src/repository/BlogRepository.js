@@ -6,6 +6,7 @@ class BlogRepository {
       Title: Title,
       Content: Content,
       PublicStatus: false,
+      PublicRequest: false,
       TopicID: TopicID,
       UserOwnerID: Userid,
     });
@@ -15,6 +16,7 @@ class BlogRepository {
     };
   }
   async updateBlog({ Title, Content, TopicID, BlogId }) {
+    console.log(BlogId);
     const blogDetail = await blog.findById(BlogId);
     if (blogDetail === null) {
       throw new Error("Blog isn't exist");
@@ -28,6 +30,7 @@ class BlogRepository {
           Title: Title,
           Content: Content,
           PublicStatus: false,
+          PublicRequest: false,
           TopicID: TopicID,
         },
       }
@@ -36,6 +39,15 @@ class BlogRepository {
     // Clone a new user
     return {
       ...updateBlog._doc,
+    };
+  }
+  async getBlogById(id) {
+    const blogDetail = await blog.findById(id);
+    if (blogDetail === null) {
+      throw new Error("Blog isn't exist");
+    }
+    return {
+      ...blogDetail._doc,
     };
   }
 }

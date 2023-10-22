@@ -21,6 +21,7 @@ const blog = mongoose.model(
         },
       },
       PublicStatus: { type: Boolean, required: true },
+      PublicRequest: { type: Boolean, required: true },
       TopicID: { type: String, required: true },
       UserOwnerID: { type: String, required: true },
     },
