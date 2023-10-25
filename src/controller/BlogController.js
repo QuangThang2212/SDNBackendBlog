@@ -23,7 +23,7 @@ class blogController {
       }
       res.status(200).json({
         message: messages,
-        data: blog,
+        blog: blog,
       });
     } catch (error) {
       console.log(error.toString());
@@ -32,24 +32,16 @@ class blogController {
   }
   async getBlogDetail(req, res) {
     const blogId = req.params.id;
+    const userId = req?.user?.data?._id;
+    const role = req?.user?.role;
     try {
-      const blogDetail = await BlogRepository.getBlogById(blogId);
-      const roleVertify =
-        blogDetail.PublicStatus === true ||
-        blogDetail.UserOwnerID === req.user.data._id ||
-        req.user.role === process.env.ROLE_ADMIN ||
-        req.user.role === process.env.ROLE_CONTENT_MANAGER;
-      if (roleVertify) {
-        res.status(200).json({
-          data: blogDetail,
-        });
-        return;
-      }
-      res.status(500).json({
-        message: "Invalid permissions to access",
+      const blogDetail = await BlogRepository.getBlogById(blogId, role, userId);
+
+      res.status(200).json({
+        blogDetail,
       });
     } catch (error) {
-      console.log(error.toString()+", location: getBlogDetail");
+      console.log(error.toString() + ", location: getBlogDetail");
       res.status(500).json({ message: error.toString() });
     }
   }

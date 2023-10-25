@@ -1,16 +1,19 @@
 import jwt from "jsonwebtoken";
 
 const listByPassURL = ["/accounts/login", "/accounts/register"];
-const adminURL = ["/topic/create"]
-const userURL = []
+const listOfURLwithParams = ["/blog"];
+const adminURL = ["/topic/create"];
+const userURL = [];
 
-function checkExistURL(url) {
-  const result = listByPassURL.find((u) => u.toLocaleLowerCase().trim() == url.toLowerCase().trim());
+function checkExistURL(req) {
+  var result = false;
+  result = listByPassURL.find((u) => u.toLocaleLowerCase().trim() == req.url.toLowerCase().trim());
+  result = listOfURLwithParams.find((u)=> req.url.toLowerCase().trim().includes(u.toLocaleLowerCase().trim()));
   return result;
 }
 function checkURLWithRole(url, role) {
   const result = true;
-  if(role===process.env.ROLE_ADMIN){
+  if (role === process.env.ROLE_ADMIN) {
     result = adminURL.find((u) => u.toLocaleLowerCase().trim() == url.toLowerCase().trim());
   }
   // if(role===process.env.ROLE_USER){
@@ -19,9 +22,9 @@ function checkURLWithRole(url, role) {
   return result;
 }
 
-
 const checkToken = (req, res, next) => {
-  if (checkExistURL(req.url)) {
+  console.log(req.url);
+  if (checkExistURL(req)) {
     next();
     return;
   }
@@ -39,9 +42,9 @@ const checkToken = (req, res, next) => {
       res.end();
     } else {
       req.user = jwt.decode(token, process.env.SECRET_KEY);
-      const roleCheck = checkURLWithRole(req.url, req.user.data.role)
+      const roleCheck = checkURLWithRole(req.url, req.user.data.role);
       //if(roleCheck){
-        next();
+      next();
       // }else{
       //   res.status(500).json({
       //     message: "Don't have authority to access",
@@ -49,6 +52,7 @@ const checkToken = (req, res, next) => {
       // }
     }
   } catch (error) {
+    console.log(error.toString());
     res.status(500).json({
       message: error.message,
     });

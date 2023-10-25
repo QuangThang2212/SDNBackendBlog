@@ -1,12 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 
-const blog = mongoose.model(
-  "Blog",
+const bookmarkAndFav = mongoose.model(
+  "BookmarkAndFav",
   new Schema(
     {
       userID: { type: String, required: true },
       blogID: { type: String, required: true },
-      type: { type: String, required: true},
+      type: { type: String, required: true },
     },
     {
       timestamps: true,
@@ -14,4 +14,4 @@ const blog = mongoose.model(
   )
 );
 
-export default blog;
+export default bookmarkAndFav;
