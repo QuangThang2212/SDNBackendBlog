@@ -32,6 +32,11 @@ class blogController {
   }
   async getBlogDetail(req, res) {
     const blogId = req.params.id;
+    if (!blogId) {
+      console.log("Error: can't found blog id, location: getBlogDetail");
+      res.status(500).json({ message: "Invalid blogId: " + blogId });
+      return;
+    }
     const userId = req?.user?.data?._id;
     const role = req?.user?.role;
     try {
