@@ -8,14 +8,14 @@ const userURL = [];
 function checkExistURL(req) {
   var result = false;
   result = listByPassURL.find((u) => u.toLocaleLowerCase().trim() == req.url.toLowerCase().trim());
-  result = listOfURLwithParams.find((u)=> req.url.toLowerCase().trim().includes(u.toLocaleLowerCase().trim()));
+  //result = listOfURLwithParams.find((u)=> req.url.toLowerCase().trim().includes(u.toLocaleLowerCase().trim()));
   return result;
 }
 function checkURLWithRole(url, role) {
   const result = true;
-  if (role === process.env.ROLE_ADMIN) {
-    result = adminURL.find((u) => u.toLocaleLowerCase().trim() == url.toLowerCase().trim());
-  }
+  // if (role === process.env.ROLE_ADMIN) {
+  //   result = adminURL.find((u) => u.toLocaleLowerCase().trim() == url.toLowerCase().trim());
+  // }
   // if(role===process.env.ROLE_USER){
   //   result = listByPassURL.find((u) => u.toLocaleLowerCase().trim() == url.toLowerCase().trim());
   // }
@@ -42,7 +42,7 @@ const checkToken = (req, res, next) => {
       res.end();
     } else {
       req.user = jwt.decode(token, process.env.SECRET_KEY);
-      const roleCheck = checkURLWithRole(req.url, req.user.data.role);
+      //const roleCheck = checkURLWithRole(req.url, req.user.data.role);
       //if(roleCheck){
       next();
       // }else{
