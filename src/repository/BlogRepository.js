@@ -83,11 +83,21 @@ class BlogRepository {
     } else {
       throw new Error("User don't have authority to access");
     }
+    
 
     return {
       ...response,
     };
   }
+  
+ 
+async getBlogsByUser(Userid) {
+  const userBlogs = await blog.find({ UserOwnerID: Userid });
+  return userBlogs;
+}
+
+  
+  
 }
 
 export default new BlogRepository();
