@@ -50,5 +50,21 @@ class blogController {
       res.status(500).json({ message: error.toString() });
     }
   }
+  async getBlogsByUser(req, res) {
+    const Userid = req.user.data._id;
+
+    try {
+      const userBlogs = await BlogRepository.getBlogsByUser(Userid);
+
+      res.status(200).json({
+        userBlogs,
+      });
+    } catch (error) {
+      console.error('Error fetching user blogs:', error);
+      res.status(500).json({ Error: 'Error fetching user blogs' });
+    }
+  }
+  
+  
 }
 export default new blogController();
