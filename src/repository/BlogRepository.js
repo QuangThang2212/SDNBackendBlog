@@ -3,6 +3,9 @@ import bookmarkAndFav from "../model/BookMarkAndFavModel.js";
 import comment from "../model/CommentModel.js";
 
 class BlogRepository {
+  
+  
+
   async createBlog({ Title, Content, TopicID, Userid }) {
     const newBlog = await blog.create({
       Title: Title,

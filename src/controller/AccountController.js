@@ -33,7 +33,6 @@ class accountController {
     try {
 
       const sendEmailCheck = await sendEmail(email);
-
       const newUser = await AccountRepository.register({ usename, email, password });
 
 
