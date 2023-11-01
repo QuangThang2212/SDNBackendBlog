@@ -184,5 +184,28 @@ class blogController {
       res.status(500).json({ Error: "Error fetching user blogs" });
     }
   }
+  async requestPublic(req, res) {
+    try {
+      const { postIds } = req.body;
+      const userId = req.user.data._id;
+
+      
+      await BlogRepository.updatePublicRequest(postIds, userId);
+
+      res.status(200).json({ message: 'Cập nhật trạng thái "PublicRequest" thành true cho các bài viết thành công' });
+    } catch (error) {
+      console.error(error.toString());
+      res.status(500).json({ message: error.toString() });
+    }
+  }
+  async getPublicRequestedPosts(req, res) {
+    try {
+      const publicRequestedPosts = await BlogRepository.getPublicRequestedPosts();
+      res.status(200).json(publicRequestedPosts);
+    } catch (error) {
+      console.error(error.toString());
+      res.status(500).json({ message: error.toString() });
+    }
+  }
 }
 export default new blogController();

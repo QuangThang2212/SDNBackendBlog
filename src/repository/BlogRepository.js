@@ -107,6 +107,22 @@ class BlogRepository {
     const userBlogs = await blog.find({ UserOwnerID: Userid });
     return userBlogs;
   }
+
+  async updatePublicRequest(postIds, userId) {
+
+    await blog.updateMany(
+      { _id: { $in: postIds } },
+      { PublicRequest: true }
+    );
+  }
+  async getPublicRequestedPosts() {
+    const publicRequestedPosts = await blog.find({ PublicRequest: true });
+    return publicRequestedPosts;
+  }
+  
+  
+ 
 }
+
 
 export default new BlogRepository();
