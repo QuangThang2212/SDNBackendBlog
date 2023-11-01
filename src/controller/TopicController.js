@@ -11,7 +11,7 @@ class topicController {
         topic = await TopicRepository.updateTopic({ TopicName, TopicID });
         messages = "Topic has been updated successfully";
       } else {
-        topic = await TopicRepository.createNewTopic({ TopicName, TopicID });
+        topic = await TopicRepository.createNewTopic({ TopicName });
         messages = "Topic has been created successfully";
       }
       res.status(200).json({

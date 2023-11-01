@@ -2,25 +2,28 @@ import jwt from "jsonwebtoken";
 
 const listByPassURL = ["/accounts/login", "/accounts/register"];
 const listOfURLwithParams = ["/blog"];
-const adminURL = ["/topic/create"];
+const adminByPassURL = ["/topic/create"];
 const userURL = [];
 
 function checkExistURL(req) {
   var result = false;
-  result = listByPassURL.find((u) => u.toLocaleLowerCase().trim() == req.url.toLowerCase().trim());
-  //result = listOfURLwithParams.find((u)=> req.url.toLowerCase().trim().includes(u.toLocaleLowerCase().trim()));
+  result = listByPassURL.includes(req.url.toLowerCase().trim());
+  if (!result) {
+    result = listOfURLwithParams.find((u) => req.url.toLowerCase().trim().includes(u.toLocaleLowerCase().trim()));
+  }
   return result;
 }
 function checkURLWithRole(url, role) {
-  const result = true;
-  // if (role === process.env.ROLE_ADMIN) {
-  //   result = adminURL.find((u) => u.toLocaleLowerCase().trim() == url.toLowerCase().trim());
-  // }
+  var result = true;
+  if (role === process.env.ROLE_ADMIN) {
+    result = adminByPassURL.includes(url.toLowerCase().trim());
+  }
   // if(role===process.env.ROLE_USER){
   //   result = listByPassURL.find((u) => u.toLocaleLowerCase().trim() == url.toLowerCase().trim());
   // }
   return result;
 }
+
 
 const checkToken = (req, res, next) => {
   console.log(req.url);
