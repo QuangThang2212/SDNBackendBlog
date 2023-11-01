@@ -3,6 +3,9 @@ import bookmarkAndFav from "../model/BookMarkAndFavModel.js";
 import comment from "../model/CommentModel.js";
 
 class BlogRepository {
+  
+  
+
   async createBlog({ Title, Content, TopicID, Userid }) {
     const newBlog = await blog.create({
       Title: Title,
@@ -83,11 +86,21 @@ class BlogRepository {
     } else {
       throw new Error("User don't have authority to access");
     }
+    
 
     return {
       ...response,
     };
   }
+  
+ 
+async getBlogsByUser(Userid) {
+  const userBlogs = await blog.find({ UserOwnerID: Userid });
+  return userBlogs;
+}
+
+  
+  
 }
 
 export default new BlogRepository();

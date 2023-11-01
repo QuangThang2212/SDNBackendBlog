@@ -5,12 +5,15 @@ const listOfURLwithParams = ["/blog"];
 const adminByPassURL = ["/topic/create"];
 const userURL = [];
 
-function checkExistURL(req) {
-  var result = false;
-  result = listByPassURL.includes(req.url.toLowerCase().trim());
-  if (!result) {
-    result = listOfURLwithParams.find((u) => req.url.toLowerCase().trim().includes(u.toLocaleLowerCase().trim()));
+function checkExistURL(url) {
+  if (url.includes("/blog/getall")) {
+    return true;
   }
+  var result = false;
+  result = listByPassURL.find((u) => u.toLocaleLowerCase().trim() == url.toLowerCase().trim());
+// if (!result) {
+//     result = listOfURLwithParams.find((u) => req.url.toLowerCase().trim().includes(u.toLocaleLowerCase().trim()));
+//   }
   return result;
 }
 function checkURLWithRole(url, role) {
@@ -27,7 +30,7 @@ function checkURLWithRole(url, role) {
 
 const checkToken = (req, res, next) => {
   console.log(req.url);
-  if (checkExistURL(req)) {
+  if (checkExistURL(req.url)) {
     next();
     return;
   }
