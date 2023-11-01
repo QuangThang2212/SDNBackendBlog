@@ -14,6 +14,7 @@ class BlogRepository {
       PublicRequest: false,
       TopicID: TopicID,
       UserOwnerID: Userid,
+      ReportCount: []
     });
 
     return {
