@@ -24,6 +24,7 @@ const blog = mongoose.model(
       PublicRequest: { type: Boolean, required: true },
       TopicID: { type: String, required: true },
       UserOwnerID: { type: String, required: true },
+      ReportCount: { type: Array },
     },
     {
       timestamps: true,
