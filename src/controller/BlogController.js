@@ -10,51 +10,43 @@ class blogController {
     const sortby = parseInt(req.params.sortby);
     const orderby = parseInt(req.params.orderby);
     let search = req.params.search;
-    if (search === "none")
-      search = "";
+    if (search === "none") search = "";
     console.log(search);
     let sort1 = "";
-    if (sortby === 1)
-      sort1 = "createdAt"
-    else if (sortby === 2)
-      sort1 = "countfav"
-    else
-      sort1 = "countbookmark"
+    if (sortby === 1) sort1 = "createdAt";
+    else if (sortby === 2) sort1 = "countfav";
+    else sort1 = "countbookmark";
 
     try {
       const data = await blog.aggregate([
         {
           $match: {
-            $and: [
-              { Title: { $regex: search, $options: "i" } },
-              { PublicStatus: true },
-              { PublicRequest: true },
-            ]
-          }
+            $and: [{ Title: { $regex: search, $options: "i" } }, { PublicStatus: true }, { PublicRequest: true }],
+          },
         },
         {
           $addFields: {
             convertedUserId: { $toObjectId: "$UserOwnerID" },
-            convertedBlogId: { $toString: "$_id" }
-          }
+            convertedBlogId: { $toString: "$_id" },
+          },
         },
         {
           $lookup: {
-            from: 'users',
-            localField: 'convertedUserId',
-            foreignField: '_id',
+            from: "users",
+            localField: "convertedUserId",
+            foreignField: "_id",
             pipeline: [{ $project: { _id: 0, usename: 1, avatar: 1 } }],
-            as: 'author'
-          }
+            as: "author",
+          },
         },
         {
           $lookup: {
-            from: 'bookmarkandfavs',
-            localField: 'convertedBlogId',
-            foreignField: 'blogID',
+            from: "bookmarkandfavs",
+            localField: "convertedBlogId",
+            foreignField: "blogID",
             pipeline: [{ $project: { userID: 1, type: 1, _id: 0 } }],
-            as: 'react'
-          }
+            as: "react",
+          },
         },
         {
           $addFields: {
@@ -63,20 +55,20 @@ class blogController {
                 $filter: {
                   input: "$react",
                   as: "r",
-                  cond: { $eq: ["$$r.type", "Bookmark"] }
-                }
-              }
+                  cond: { $eq: ["$$r.type", "Bookmark"] },
+                },
+              },
             },
             countfav: {
               $size: {
                 $filter: {
                   input: "$react",
                   as: "r",
-                  cond: { $eq: ["$$r.type", "Fav"] }
-                }
-              }
-            }
-          }
+                  cond: { $eq: ["$$r.type", "Fav"] },
+                },
+              },
+            },
+          },
         },
 
         { $sort: { [sort1]: orderby } },
@@ -85,32 +77,27 @@ class blogController {
             $expr: {
               $cond: {
                 if: { $ne: [req.params.tag, "none"] },
-                then: { $eq: ['$TopicID', req.params.tag] },
-                else: {}
-              }
-            }
-          }
+                then: { $eq: ["$TopicID", req.params.tag] },
+                else: {},
+              },
+            },
+          },
         },
         {
           $facet: {
             // Nhánh 1: Lấy kết quả trang hiện tại (bỏ qua pha skip và limit)
-            pagingResult: [
-              { $skip: parseInt(req.params.offset) },
-              { $limit: parseInt(req.params.limit) }
-            ],
+            pagingResult: [{ $skip: parseInt(req.params.offset) }, { $limit: parseInt(req.params.limit) }],
             // Nhánh 2: Tính tổng số lượng bản ghi (không bỏ qua pha skip và limit)
-            totalCount: [
-              { $count: "count" }
-            ]
-          }
-        }
+            totalCount: [{ $count: "count" }],
+          },
+        },
       ]);
       const pagingResult = data[0].pagingResult;
       const totalCount = data[0].totalCount[0]?.count || 0;
       res.status(200).json({
         data: pagingResult,
-        count: totalCount
-      })
+        count: totalCount,
+      });
     } catch (error) {
       res.status(500).json({ message: error.toString() });
     }
@@ -123,23 +110,23 @@ class blogController {
     const { blogid, type } = req.body;
 
     try {
-      await react.reactBlog({ blogid, type, userId });
-      var messages = "like/bookmark success"
+      const reactOfUser = await react.reactBlog({ blogid, type, userId });
+      var messages;
+      if (reactOfUser.type===process.env.TYPE_REPORT) {
+        messages = "Thank you for your report to this blog";
+      }else{
+        messages = "Apply your react";
+      }
       res.status(200).json({
         message: messages,
       });
     } catch (error) {
-      res.status(500).json({ message: error.toString() });
+      console.log(error.toString());
+      res.status(500).json({ message: error.toString()});
     }
   }
 
-
-
   async createBlog(req, res) {
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //   return res.status(400).json({ errors: errors.array() });
-    // }
     const { Title, Content, TopicID } = req.body;
     const Userid = req.user.data._id;
     const BlogId = req.body.blogId;
@@ -176,7 +163,7 @@ class blogController {
       const blogDetail = await BlogRepository.getBlogById(blogId, role, userId);
 
       res.status(200).json({
-        blogDetail,
+        ...blogDetail
       });
     } catch (error) {
       console.log(error.toString() + ", location: getBlogDetail");
@@ -193,11 +180,9 @@ class blogController {
         userBlogs,
       });
     } catch (error) {
-      console.error('Error fetching user blogs:', error);
-      res.status(500).json({ Error: 'Error fetching user blogs' });
+      console.error("Error fetching user blogs:", error);
+      res.status(500).json({ Error: "Error fetching user blogs" });
     }
   }
-  
-  
 }
 export default new blogController();

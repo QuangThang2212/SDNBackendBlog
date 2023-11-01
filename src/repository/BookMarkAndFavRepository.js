@@ -1,20 +1,37 @@
-import BookMarkandFav from '../model/BookMarkAndFavModel.js'
+import blog from "../model/BlogModel.js";
+import BookMarkandFav from "../model/BookMarkAndFavModel.js";
 
 class BookMarkAndFavModel {
-
-    async reactBlog({blogid,type,userId}){
-       
-        const checkexist = await BookMarkandFav.find({userID:userId,blogID:blogid});
-        const checkexist2 = await BookMarkandFav.find({userID:userId,blogID:blogid,type:type});
-    
-        if(checkexist.length===0)
-            BookMarkandFav.create({userID:userId,blogID:blogid,type:type});
-        else if(checkexist2.length===0)
-            BookMarkandFav.create({userID:userId,blogID:blogid,type:type});
-        else
-            BookMarkandFav.deleteOne({userID:userId,blogID:blogid,type:type}).exec();
+  async reactBlog({ blogid, type, userId }) {
+    const checkexist = await BookMarkandFav.find({ userID: userId, blogID: blogid, type: type });
+    if (checkexist.length === 0) {
+      BookMarkandFav.create({ userID: userId, blogID: blogid, type: type });
+      if (type === process.env.TYPE_REPORT) {
+        const CountNumberOfReport = await BookMarkandFav.find({ blogID: blogid, type: type }).count();
+        if (CountNumberOfReport === process.env.LIMIT_TO_DELETE_BLOG) {
+          await BookMarkandFav.deleteMany({ blogID: blogid, type: type });
+          await blog.updateOne(
+            {
+              _id: BlogId,
+            },
+            {
+              $set: {
+                PublicStatus: false,
+                PublicRequest: false,
+              },
+            }
+          );
+        }
+      }
+    } else {
+      if (type !== process.env.TYPE_REPORT) {
+        BookMarkandFav.deleteOne({ userID: userId, blogID: blogid, type: type });
+      }
     }
-
+    return {
+      type: type,
+    };
+  }
 }
 
-export default new BookMarkAndFavModel()
+export default new BookMarkAndFavModel();

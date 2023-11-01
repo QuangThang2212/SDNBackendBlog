@@ -1,11 +1,9 @@
 import blog from "../model/BlogModel.js";
 import bookmarkAndFav from "../model/BookMarkAndFavModel.js";
 import comment from "../model/CommentModel.js";
+import topic from "../model/TopicModel.js";
 
 class BlogRepository {
-  
-  
-
   async createBlog({ Title, Content, TopicID, Userid }) {
     const newBlog = await blog.create({
       Title: Title,
@@ -14,7 +12,7 @@ class BlogRepository {
       PublicRequest: false,
       TopicID: TopicID,
       UserOwnerID: Userid,
-      ReportCount: []
+      ReportCount: [],
     });
 
     return {
@@ -62,11 +60,15 @@ class BlogRepository {
       var favOfUser = false;
       var bookMarkOfUser = false;
 
-      const checkFavOfUser = await bookmarkAndFav.find({ userID: userid, blogID: id, type: true }).exec();
-      const numberOfFav = await bookmarkAndFav.find({ blogID: id, type: true }).count().exec();
+      const checkFavOfUser = await bookmarkAndFav
+        .find({ userID: userid, blogID: id, type: process.env.TYPE_FAV })
+        .exec();
+      const numberOfFav = await bookmarkAndFav.find({ blogID: id, type: process.env.TYPE_FAV }).count().exec();
 
-      const checkBookmarkOfUser = await bookmarkAndFav.find({ userID: userid, blogID: id, type: false }).exec();
-      const numberOfBookmark = await bookmarkAndFav.find({ blogID: id, type: false }).count().exec();
+      const checkBookmarkOfUser = await bookmarkAndFav
+        .find({ userID: userid, blogID: id, type: process.env.TYPE_MARK })
+        .exec();
+      const numberOfBookmark = await bookmarkAndFav.find({ blogID: id, type: process.env.TYPE_MARK }).count().exec();
 
       const numberOfComments = await comment.find({ blogID: id }).count().exec();
 
@@ -76,32 +78,35 @@ class BlogRepository {
       if (checkBookmarkOfUser.length > 0) {
         bookMarkOfUser = true;
       }
+      console.log(blogDetail);
+      const topicResult = await topic.findById(blogDetail?.TopicID);
+
+      const numberOfBlog = await blog.find({ UserOwnerID: userid, PublicStatus: true }).count();
       response = {
-        ...blogDetail._doc,
-        numberOfFav,
+        blogDetail: {
+          ...blogDetail._doc,
+          numberOfFav,
+          numberOfBookmark,
+          numberOfComments,
+          topic: topicResult,
+          userTotalBlog: numberOfBlog,
+        },
         bookMarkOfUser,
         favOfUser,
-        numberOfBookmark,
-        numberOfComments,
       };
     } else {
       throw new Error("User don't have authority to access");
     }
-    
 
     return {
       ...response,
     };
   }
-  
- 
-async getBlogsByUser(Userid) {
-  const userBlogs = await blog.find({ UserOwnerID: Userid });
-  return userBlogs;
-}
 
-  
-  
+  async getBlogsByUser(Userid) {
+    const userBlogs = await blog.find({ UserOwnerID: Userid });
+    return userBlogs;
+  }
 }
 
 export default new BlogRepository();
