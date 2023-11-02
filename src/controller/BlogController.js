@@ -21,7 +21,7 @@ class blogController {
       const data = await blog.aggregate([
         {
           $match: {
-            $and: [{ Title: { $regex: search, $options: "i" } }, { PublicStatus: true }, { PublicRequest: true }],
+            $and: [{ Title: { $regex: search, $options: "i" } }, { PublicStatus: true }, { PublicRequest: false }],
           },
         },
         {

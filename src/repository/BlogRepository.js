@@ -119,9 +119,21 @@ class BlogRepository {
     const publicRequestedPosts = await blog.find({ PublicRequest: true });
     return publicRequestedPosts;
   }
-  
-  
- 
+
+  async publicBlog(id) {
+    await blog.updateOne(
+      { _id: id },
+      {
+        $set: {
+          PublicStatus: true,
+          PublicRequest: false,
+        },
+      }
+    );
+  }
+
+
+
 }
 
 
