@@ -25,7 +25,8 @@ class BookMarkAndFavModel {
       }
     } else {
       if (type !== process.env.TYPE_REPORT) {
-        BookMarkandFav.deleteOne({ userID: userId, blogID: blogid, type: type });
+        console.log("Delete react fav or bookmark");
+        await BookMarkandFav.deleteMany({ userID: userId, blogID: blogid, type: type });
       }
     }
     return {

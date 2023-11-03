@@ -7,7 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index",
     "debug": "nodemon --inspect src/index"
-
   },
   "type": "module",
   "dependencies": {
