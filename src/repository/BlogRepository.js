@@ -125,6 +125,15 @@ class BlogRepository {
       }
     );
   }
+  async getBlogByTopicName(TopicName) {
+    const topics = await topic.findOne({
+      TopicName: TopicName,
+    });
+    console.log(topics._id);
+    const filtterBlogs = await blog.find({ TopicID: topics._id });
+    return filtterBlogs;
+  }
+
 }
 
 export default new BlogRepository();

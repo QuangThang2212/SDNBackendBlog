@@ -211,5 +211,17 @@ class blogController {
       res.status(500).json({ message: error.toString() });
     }
   }
+
+  async getTopicByTopicName(req, res) {
+    const TopicName = req.params.TopicName;
+    try {
+      const result = await BlogRepository.getBlogByTopicName(TopicName);
+      res.status(200).json(
+       result,
+      );
+    } catch (error) {
+      res.status(500).json({ message: error.toString() });
+    }
+  }
 }
 export default new blogController();

@@ -18,7 +18,7 @@ BlogRouter.post(
 
 );
 BlogRouter.put('/requested', BlogController.requestPublic);
-
+BlogRouter.get("/filter/:TopicName", BlogController.getTopicByTopicName);
 
 
 export default BlogRouter;

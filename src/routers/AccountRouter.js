@@ -36,4 +36,15 @@ AccountRouter.post(
     .withMessage("Mật khẩu phải lớn hơn 8 kí tự"),
   AccountController.login
 );
+
+AccountRouter.post(
+  "/updateAccountRole/:accountId",
+  AccountController.updateRole
+);
+
+AccountRouter.get('/', AccountController.findAll);
+AccountRouter.get("/search/:usename", AccountController.searchUser);
+AccountRouter.get("/filter/:Role", AccountController.filterRole);
+
+
 export default AccountRouter;
