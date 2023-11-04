@@ -60,7 +60,8 @@ const checkToken = (req, res, next) => {
   } catch (error) {
     console.log(error.toString());
     res.status(500).json({
-      message: error.message,
+      message: "Please login the system",
+      error: error.toString(),
     });
   }
 };

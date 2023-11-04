@@ -108,13 +108,16 @@ class blogController {
     console.log(userId);
     console.log("check", req.body);
     const { blogid, type } = req.body;
-
+    if (!userId || !blogid || !type) {
+      console.log("Unavailable react blog request: " + userId + " " + blogid + " " + type);
+      res.status(500).json({ message: "Unavailable react blog request" });
+    }
     try {
       const reactOfUser = await react.reactBlog({ blogid, type, userId });
       var messages;
-      if (reactOfUser.type===process.env.TYPE_REPORT) {
+      if (reactOfUser.type === process.env.TYPE_REPORT) {
         messages = "Thank you for your report to this blog";
-      }else{
+      } else {
         messages = "Apply your react";
       }
       res.status(200).json({
@@ -122,7 +125,7 @@ class blogController {
       });
     } catch (error) {
       console.log(error.toString());
-      res.status(500).json({ message: error.toString()});
+      res.status(500).json({ message: error.toString() });
     }
   }
 
@@ -130,6 +133,8 @@ class blogController {
     const { Title, Content, TopicID } = req.body;
     const Userid = req.user.data._id;
     const BlogId = req.body.blogId;
+
+    console.log(BlogId);
 
     try {
       var messages;
@@ -158,12 +163,12 @@ class blogController {
       return;
     }
     const userId = req?.user?.data?._id;
-    const role = req?.user?.role;
+    const role = req?.user?.data?.Role;
     try {
       const blogDetail = await BlogRepository.getBlogById(blogId, role, userId);
 
       res.status(200).json({
-        ...blogDetail
+        ...blogDetail,
       });
     } catch (error) {
       console.log(error.toString() + ", location: getBlogDetail");
@@ -189,7 +194,6 @@ class blogController {
       const { postIds } = req.body;
       const userId = req.user.data._id;
 
-      
       await BlogRepository.updatePublicRequest(postIds, userId);
 
       res.status(200).json({ message: 'Cập nhật trạng thái "PublicRequest" thành true cho các bài viết thành công' });
