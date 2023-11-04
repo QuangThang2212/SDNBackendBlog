@@ -49,6 +49,69 @@ class accountController {
       });
     }
   }
+
+  async updateRole(req, res) {
+    const accountId = req.params.accountId;
+    const roleName = req.body.roleName;
+    const newAccount = await AccountRepository.updateAccountRole(
+      accountId,
+      roleName
+    );
+    console.log(newAccount);
+    res.status(201).json({
+      message: "Update role successfully.",
+      data: {
+        user: newAccount,
+      },
+    });
+  }
+
+  async findAll(req, res) {
+    try {
+      const users = await AccountRepository.findAll(req, res);
+      res.status(200).json({
+        message: 'Get all users successfully.',
+        data: users
+      })
+    } catch (error) {
+      res.status(500).json({
+        message: error.toString()
+      })
+    }
+  }
+
+  async searchUser(req, res) {
+    const usename = req.params.usename;
+    try {
+
+      const users = await AccountRepository.searchUser(usename);
+      res.status(200).json({
+        message: 'Get all users successfully.',
+        users
+      })
+    } catch (error) {
+      res.status(500).json({
+        message: error.toString()
+      })
+    }
+  }
+
+  async filterRole(req, res) {
+    const Role = req.params.Role;
+    try {
+
+      const users = await AccountRepository.filterRole(Role);
+      res.status(200).json({
+        message: 'Get all users successfully.',
+        users
+      })
+    } catch (error) {
+      res.status(500).json({
+        message: error.toString()
+      })
+    }
+  }
+
 }
 
 export default new accountController;

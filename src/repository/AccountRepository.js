@@ -65,7 +65,38 @@ class accountRepository {
     };
   }
 
+  async updateAccountRole(accountId, roleName) {
+    const accountNew = await user.updateOne(
+      { _id: accountId },
+      { $set: { Role: roleName } }
+    );
+    return {
+      ...accountNew,
+    };
+  }
 
+  async findAll(req, res) {
+    try {
+      console.log(1234);
+      return user.find({});
+    } catch (error) {
+      throw new Error(error.message)
+    }
+  }
+
+  async searchUser(usename) {
+    const users = await user.find({
+      usename: usename,
+    });
+    return users
+  }
+
+  async filterRole(Role) {
+    const users = await user.find({
+      Role: Role,
+    });
+    return users
+  }
 
 
 }

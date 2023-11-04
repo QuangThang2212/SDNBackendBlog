@@ -46,16 +46,15 @@ class BlogRepository {
   }
   async getBlogById(id, role, userid) {
     var response;
-
     const blogDetail = await blog.findById(id);
     if (blogDetail === null) {
       throw new Error("Blog isn't exist");
     }
-    const roleVertify = true;
-    // blogDetail.PublicStatus === true ||
-    // blogDetail.UserOwnerID === userId ||
-    // role === process.env.ROLE_ADMIN ||
-    // role === process.env.ROLE_CONTENT_MANAGER;
+    const roleVertify =
+      blogDetail.PublicStatus === true ||
+      blogDetail.UserOwnerID === userid ||
+      role === process.env.ROLE_ADMIN ||
+      role === process.env.ROLE_CONTENT_MANAGER;
     if (roleVertify) {
       var favOfUser = false;
       var bookMarkOfUser = false;
@@ -78,7 +77,6 @@ class BlogRepository {
       if (checkBookmarkOfUser.length > 0) {
         bookMarkOfUser = true;
       }
-      console.log(blogDetail);
       const topicResult = await topic.findById(blogDetail?.TopicID);
 
       const numberOfBlog = await blog.find({ UserOwnerID: userid, PublicStatus: true }).count();
@@ -109,11 +107,7 @@ class BlogRepository {
   }
 
   async updatePublicRequest(postIds, userId) {
-
-    await blog.updateMany(
-      { _id: { $in: postIds } },
-      { PublicRequest: true }
-    );
+    await blog.updateMany({ _id: { $in: postIds } }, { PublicRequest: true });
   }
   async getPublicRequestedPosts() {
     const publicRequestedPosts = await blog.find({ PublicRequest: true });
@@ -132,7 +126,14 @@ class BlogRepository {
     );
   }
 
-
+  async getBlogByTopicName(TopicName) {
+    const topics = await topic.findOne({
+      TopicName: TopicName,
+    });
+    console.log(topics._id);
+    const filtterBlogs = await blog.find({ TopicID: topics._id });
+    return filtterBlogs;
+  }
 
 }
 
