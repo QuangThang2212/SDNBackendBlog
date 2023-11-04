@@ -125,7 +125,6 @@ class BlogRepository {
       }
     );
   }
-
   async getBlogByTopicName(TopicName) {
     const topics = await topic.findOne({
       TopicName: TopicName,
@@ -136,6 +135,5 @@ class BlogRepository {
   }
 
 }
-
 
 export default new BlogRepository();
