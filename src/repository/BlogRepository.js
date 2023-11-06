@@ -133,6 +133,27 @@ class BlogRepository {
     const filtterBlogs = await blog.find({ TopicID: topics._id });
     return filtterBlogs;
   }
+  async getBookmarkedBlogs(userId) {
+    try {
+
+      const bookmarkType = process.env.TYPE_MARK;
+      const bookmarkedBlogs = await bookmarkAndFav
+        .find({ userID: userId, type: bookmarkType })
+        .populate({
+          path: "blogID",
+          model: "Blog",
+        })
+        .exec();
+
+
+      const publicBlogs = bookmarkedBlogs.filter(item => item.blogID.PublicStatus === true);
+
+
+      return publicBlogs.map((item) => item.blogID);
+    } catch (error) {
+      throw error;
+    }
+  }
 
 }
 
