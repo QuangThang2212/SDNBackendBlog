@@ -97,6 +97,31 @@ class accountRepository {
     });
     return users
   }
+  async updateUserProfile(accountId, userData) {
+    try {
+      const userToUpdate = await user.findById(accountId);
+
+      if (!userToUpdate) {
+        throw new Error('User not found');
+      }
+
+      if (userData.usename) {
+        userToUpdate.usename = userData.usename;
+      }
+      if (userData.email) {
+        userToUpdate.email = userData.email;
+      }
+      if (userData.avatar) {
+        userToUpdate.avatar = userData.avatar;
+      }
+
+      const updatedUser = await userToUpdate.save();
+
+      return updatedUser;
+    } catch (error) {
+      throw error;
+    }
+  }
 
 
 }

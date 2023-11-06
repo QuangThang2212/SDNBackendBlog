@@ -43,6 +43,7 @@ AccountRouter.post(
 );
 
 AccountRouter.get('/', AccountController.findAll);
+AccountRouter.put('/userUpdate', AccountController.updateProfile);
 AccountRouter.get("/search/:usename", AccountController.searchUser);
 AccountRouter.get("/filter/:Role", AccountController.filterRole);
 
