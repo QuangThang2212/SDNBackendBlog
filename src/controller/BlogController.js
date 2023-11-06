@@ -233,5 +233,18 @@ class blogController {
       res.status(500).json({ message: error.toString() });
     }
   }
+  async getBookmarkedBlogs(req, res) {
+    const userId = req.user.data._id;
+  
+    try {
+      const filteredBlogs = await BlogRepository.getBookmarkedBlogs(userId);
+  
+      res.status(200).json(filteredBlogs);
+    } catch (error) {
+      console.error("Error fetching bookmarked blogs: ", error);
+      res.status(500).json({ message: error.toString() });
+    }
+  }
+  
 }
 export default new blogController();

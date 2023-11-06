@@ -7,6 +7,7 @@ BlogRouter.get('/public-requested', BlogController.getPublicRequestedPosts);
 BlogRouter.get('/user', BlogController.getBlogsByUser);
 BlogRouter.get("/getall/:search/:limit/:offset/:tag/:sortby/:orderby", BlogController.getAllBlog);
 BlogRouter.post("/react", BlogController.reactBlog);
+BlogRouter.get("/react", BlogController.getBookmarkedBlogs);
 BlogRouter.get("/:id", BlogController.getBlogDetail);
 BlogRouter.post(
   "/create",
