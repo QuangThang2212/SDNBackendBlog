@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const listByPassURL = ["/accounts/login", "/accounts/register"];
+const listByPassURL = ["/accounts/login", "/accounts/register","/users/topauthorlist"];
 const listOfURLwithParams = ["/blog"];
 const adminByPassURL = ["/topic/create"];
 const userURL = [];
