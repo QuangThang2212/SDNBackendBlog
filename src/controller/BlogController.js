@@ -21,13 +21,14 @@ class blogController {
       const data = await blog.aggregate([
         {
           $match: {
-            $and: [{ Title: { $regex: search, $options: "i" } }, { PublicStatus: true }, { PublicRequest: false }],
+            $and: [{ Title: { $regex: search, $options: "i" } }, { PublicStatus: true }],
           },
         },
         {
           $addFields: {
             convertedUserId: { $toObjectId: "$UserOwnerID" },
             convertedBlogId: { $toString: "$_id" },
+            convertedTopicId: { $toObjectId: "$TopicID" },
           },
         },
         {
@@ -37,6 +38,15 @@ class blogController {
             foreignField: "_id",
             pipeline: [{ $project: { _id: 0, usename: 1, avatar: 1 } }],
             as: "author",
+          },
+        },
+        {
+          $lookup: {
+            from: "topics",
+            localField: "convertedTopicId",
+            foreignField: "_id",
+            pipeline: [{ $project: { TopicName: 1, _id: 0 } }],
+            as: "topicname",
           },
         },
         {
@@ -55,7 +65,7 @@ class blogController {
                 $filter: {
                   input: "$react",
                   as: "r",
-                  cond: { $eq: ["$$r.type", "Bookmark"] },
+                  cond: { $eq: ["$$r.type", process.env.TYPE_MARK] },
                 },
               },
             },
@@ -64,7 +74,7 @@ class blogController {
                 $filter: {
                   input: "$react",
                   as: "r",
-                  cond: { $eq: ["$$r.type", "Fav"] },
+                  cond: { $eq: ["$$r.type", process.env.TYPE_FAV] },
                 },
               },
             },

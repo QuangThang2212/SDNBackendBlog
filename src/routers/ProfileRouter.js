@@ -5,4 +5,6 @@ const ProfileRouter = express.Router();
 
 ProfileRouter.get("/", ProfileController.getUserProfile);
 
+ProfileRouter.get("/topauthorlist", ProfileController.getTopAuthor);
+
 export default ProfileRouter;
