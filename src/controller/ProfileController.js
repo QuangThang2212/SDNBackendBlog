@@ -3,7 +3,10 @@ import usermodel from '../model/UserModel.js';
 class ProfileController {
   async getUserProfile(req, res) {
     try {
-      const user = req.user.data; // Lấy thông tin người dùng từ req.user
+      const ReqUser = req.user.data;
+      // console.log(user);
+
+      const user = await usermodel.findOne({_id:ReqUser._id});
 
       if (!user) {
         res.status(404).json({ message: 'User not found' });
@@ -142,6 +145,7 @@ class ProfileController {
       res.status(500).json({ message: error.toString() });
     }
   }
+
 
 }
 

@@ -111,6 +111,23 @@ class accountController {
       })
     }
   }
+  async updateProfile(req, res) {
+    const accountId = req.user.data._id; 
+    console.log("userid", accountId);
+    const { usename, email, avatar } = req.body; 
+  
+    try {
+     
+      const updatedUser = await AccountRepository.updateUserProfile(accountId, { usename, email, avatar });
+  
+      res.status(200).json({
+        message: "Update user profile successfully.",
+        data: updatedUser,
+      });
+    } catch (error) {
+      res.status(500).json({ message: error.toString() });
+    }
+  }
 
 }
 
