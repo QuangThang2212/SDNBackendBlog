@@ -79,7 +79,7 @@ class BlogRepository {
       }
       const topicResult = await topic.findById(blogDetail?.TopicID);
 
-      const numberOfBlog = await blog.find({ UserOwnerID: userid, PublicStatus: true }).count();
+      const numberOfBlog = await blog.find({ UserOwnerID: blogDetail.UserOwnerID, PublicStatus: true }).count();
       response = {
         blogDetail: {
           ...blogDetail._doc,

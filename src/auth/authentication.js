@@ -1,19 +1,22 @@
 import jwt from "jsonwebtoken";
 
 const listByPassURL = ["/accounts/login", "/accounts/register"];
-const listOfURLwithParams = ["/blog"];
+const listOfURLwithParams = ["/getall","/blogDetail"];
 const adminByPassURL = ["/topic/create"];
 const userURL = [];
 
 function checkExistURL(url) {
-  if (url.includes("/blog/getall")) {
-    return true;
-  }
+  // if (url.includes("/blog/getall")) {
+  //   return true;
+  // }
+  // if (url.includes("/socket.io")) {
+  //   return true;
+  // }
   var result = false;
   result = listByPassURL.find((u) => u.toLocaleLowerCase().trim() == url.toLowerCase().trim());
-// if (!result) {
-//     result = listOfURLwithParams.find((u) => req.url.toLowerCase().trim().includes(u.toLocaleLowerCase().trim()));
-//   }
+  if (!result) {
+    result = listOfURLwithParams.find((u) => url.toLowerCase().trim().includes(u.toLocaleLowerCase().trim()));
+  }
   return result;
 }
 function checkURLWithRole(url, role) {
@@ -26,7 +29,6 @@ function checkURLWithRole(url, role) {
   // }
   return result;
 }
-
 
 const checkToken = (req, res, next) => {
   console.log(req.url);

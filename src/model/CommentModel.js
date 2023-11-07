@@ -4,10 +4,10 @@ const comment = mongoose.model(
   "comment",
   new Schema(
     {
-      CreateAt: { type: Object, required: true },
       comment: { type: String, required: true },
-      ListAnswerComment: { type: Array, required: true },
+      fatherComment: { type: String },
       blogID: { type: String, required: true },
+      userID: { type: String, required: true },
     },
     {
       timestamps: true,

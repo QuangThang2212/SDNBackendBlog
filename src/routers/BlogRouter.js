@@ -1,13 +1,14 @@
 import express from "express";
 import { body } from "express-validator";
 import BlogController from "../controller/BlogController.js";
+import CommentController from "../controller/CommentController.js";
 
 const BlogRouter = express.Router();
 BlogRouter.get('/public-requested', BlogController.getPublicRequestedPosts);
 BlogRouter.get('/user', BlogController.getBlogsByUser);
 BlogRouter.get("/getall/:search/:limit/:offset/:tag/:sortby/:orderby", BlogController.getAllBlog);
 BlogRouter.post("/react", BlogController.reactBlog);
-BlogRouter.get("/:id", BlogController.getBlogDetail);
+BlogRouter.get("/blogDetail/:id", BlogController.getBlogDetail);
 BlogRouter.post(
   "/create",
   body("title")
@@ -19,6 +20,8 @@ BlogRouter.post(
 );
 BlogRouter.put('/requested', BlogController.requestPublic);
 BlogRouter.get("/filter/:TopicName", BlogController.getTopicByTopicName);
+
+BlogRouter.get("/blogDetail/:id/comments", CommentController.getAllComments);
 
 
 export default BlogRouter;
