@@ -9,7 +9,7 @@ const bookmarkAndFav = mongoose.model(
       type: { type: String, required: true },
     },
     {
-      timestamps: true,
+      timestamps: true, 
     }
   )
 );
