@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 const listByPassURL = ["/accounts/login", "/accounts/register"];
-const listOfURLwithParams = ["/getall", "/blogDetail"];
+const listOfURLwithParams = ["/getall", "/blogDetail", "/topauthorlist"];
 const adminByPassURL = ["/topic/create"];
 const userURL = [];
 
@@ -26,9 +26,11 @@ function checkURLWithRole(url, role) {
 
 const checkToken = (req, res, next) => {
   console.log(req.url);
-  if (checkExistURL(req.url)) {
-    next();
-    return;
+  if (!req.headers.authorization) {
+    if (checkExistURL(req.url)) {
+      next();
+      return;
+    }
   }
 
   try {

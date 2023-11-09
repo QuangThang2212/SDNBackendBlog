@@ -36,15 +36,74 @@ class commentController {
         blogID: blogid,
         userID: user.data._id,
       });
+      var res = { ...result._doc };
+      res.user = user.data;
 
       return {
-        message: result,
+        message: res,
         status: 200,
       };
     } catch (error) {
       console.log(error);
       return {
         message: "Create comment fail",
+        status: 500,
+      };
+    }
+  }
+  async deleteComments({ token, commentID }) {
+    var jwtObject;
+    try {
+      jwtObject = jwt.verify(token, process.env.SECRET_KEY);
+    } catch (error) {
+      console.log(error);
+      return {
+        message: "Access token error",
+        status: 500,
+      };
+    }
+
+    let isExpired = Date.now() >= jwtObject.exp * 1000;
+
+    if (isExpired) {
+      return {
+        message: "Access token expired",
+        status: 500,
+      };
+    }
+    const user = jwt.decode(token, process.env.SECRET_KEY);
+    const commentDelete = await comment.findById(commentID);
+    if (!commentDelete) {
+      return {
+        message: "Comment doesn't exist",
+        status: 500,
+      };
+    }
+    console.log(commentDelete);
+    if (user.data._id !== commentDelete.userID) {
+      return {
+        message: "Invalid delete request",
+        status: 500,
+      };
+    }
+    try {
+      if (commentDelete.fatherComment === "") {
+        const commentChildDelete = await comment.find({ fatherComment: commentID });
+        if (commentChildDelete.length > 0) {
+          await comment.deleteMany({ fatherComment: commentID });
+        }
+      }
+
+      await comment.findByIdAndDelete(commentID);
+      return {
+        message: commentID,
+        fatherComment: commentDelete.fatherComment,
+        status: 200,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        message: "Delete comment fail",
         status: 500,
       };
     }
@@ -69,7 +128,7 @@ class commentController {
             const commentAuthor = await user.findById(c.userID);
 
             const childComs = await comment.find({ fatherComment: c._id });
-
+            res.fatherComment = [];
             if (childComs.length !== 0) {
               const subComments = await Promise.all(
                 childComs.map(async (subc) => {

@@ -34,6 +34,13 @@ io.on("connection", (socket) => {
     const res = await CommentController.createNewComment({ message, token, blogid, commentFatherId });
     socket.broadcast.emit("response", JSON.stringify(res));
   });
+  socket.on("delete_message", async (data) => {
+    const { token, commentID } = JSON.parse(data);
+    console.log(data);
+    const res = await CommentController.deleteComments({ token, commentID });
+    console.log(res)
+    socket.broadcast.emit("delete_response", JSON.stringify(res));
+  });
 });
 
 app.use(express.json());
@@ -47,7 +54,7 @@ routers(app);
 const port = process.env.PORT;
 const socket = process.env.PORT_SOCKET;
 server.listen(socket, () => {
-  console.log("Server is running on port "+socket);
+  console.log("Server is running on port " + socket);
 });
 app.listen(port, async () => {
   await mongoose
