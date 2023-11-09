@@ -115,8 +115,8 @@ class blogController {
 
   async reactBlog(req, res) {
     const userId = req.user.data._id;
-    console.log(userId);
-    console.log("check", req.body);
+    // console.log(userId);
+    // console.log("check", req.body);
     const { blogid, type } = req.body;
     if (!userId || !blogid || !type) {
       console.log("Unavailable react blog request: " + userId + " " + blogid + " " + type);

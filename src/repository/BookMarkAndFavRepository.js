@@ -5,14 +5,14 @@ class BookMarkAndFavModel {
   async reactBlog({ blogid, type, userId }) {
     const checkexist = await BookMarkandFav.find({ userID: userId, blogID: blogid, type: type });
     if (checkexist.length === 0) {
-      BookMarkandFav.create({ userID: userId, blogID: blogid, type: type });
+      await BookMarkandFav.create({ userID: userId, blogID: blogid, type: type });
       if (type === process.env.TYPE_REPORT) {
-        const CountNumberOfReport = await BookMarkandFav.find({ blogID: blogid, type: type }).count();
-        if (CountNumberOfReport === process.env.LIMIT_TO_DELETE_BLOG) {
+        const CountNumberOfReport = await BookMarkandFav.find({ blogID: blogid, type: type }).count().exec();
+        if (CountNumberOfReport == process.env.LIMIT_TO_DELETE_BLOG) {
           await BookMarkandFav.deleteMany({ blogID: blogid, type: type });
           await blog.updateOne(
             {
-              _id: BlogId,
+              _id: blogid,
             },
             {
               $set: {

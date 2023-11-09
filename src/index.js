@@ -27,7 +27,6 @@ app.use(
 );
 
 io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
 
   socket.on("send_message", async (data) => {
     const { message, token, blogid, commentFatherId } = JSON.parse(data);
